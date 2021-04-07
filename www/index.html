@@ -47,6 +47,8 @@
           </ons-page>
         </template>
 
+        
+
         <!-- create account page 1 -->
         <template id="createAccount_1.html">
             <ons-page id="createAccount-temp">
@@ -195,13 +197,12 @@
                         <label for="salary">Years of experience</label>
                         <div>
                             <ons-select select-id="salary" class="form-field-full" modifier="underbar">
-                                <option value="1">0 - 1 year</option>
-                                <option value="2">1 - 3 years</option>
-                                <option value="3">4 - 6 years</option>
-                                <option value="4">7 - 9 years</option>
-                                <option value="5">10 - 12 years</option>
-                                <option value="6">13 - 15 years</option>
-                                <option value="7">16+ years</option>
+                                <option value="1">under $29,999</option>
+                                <option value="2">$30,000 - $49,999</option>
+                                <option value="3">$50,000 - $79,999</option>
+                                <option value="4">$80,000 - $129,999</option>
+                                <option value="5">$130,000 - $179,999</option>
+                                <option value="6">$180,000 +</option>
                             </ons-select>
                         </div>
                     </div> -->
@@ -244,28 +245,47 @@
             </ons-page>
         </template>
 
+        
+
         <!-- Single Product Page -->
         <template id="single.html">
             <ons-page id="single-temp">
                 <ons-toolbar>
                     <!-- Button to pop page back to home -->
                     <div class="left"><ons-back-button>Back</ons-back-button></div>
-                    <div class="center"></div>
+                    <div class="center" id="center-toolbar"></div>
                 </ons-toolbar>
 
-                <!-- Display wine information -->
+                <!-- Display job information -->
                 <ons-card>
-                    <div><img style="max-width: 100%;" id="singleImg"></div>
-                    <div class="title" id="singleTitle" ></div>
-                    <div class="content" id="singleContent" ></div>
+                    <div class="title" id="singleTitle"></div>
+                    <div class="title" id="singleSalary"></div>
+                    <div class="title" id="singleCity"></div>
+                    <div class="title" id="singleExperience"></div>
+                    <div class="title" id="singleSeniority"></div>
+                    <div class="title" id="singleFirmType"></div>
+                </ons-card>
+                <ons-card>
+                    <div class="title" id="meal"></div>
+                    <div class="title" id="gas"></div>
+                    <div class="title" id="internet"></div>
+                    <div class="title" id="rent"></div>
                 </ons-card>
             </ons-page>
         </template>
+
         
+        <ons-modal id="spinner-modal">
+            <div style="margin: auto;">
+                <ons-icon icon="md-spinner" size="100px" spin></ons-icon>              
+            </div>
+        </ons-modal>
+
+    
     </body>
 
     <script src="./js/index.js"></script>
-    <script src="./js/wine-list.js"></script>
+    <script src="./js/living-standard.js"></script>
 
     <script>
         var logIn = function() {
@@ -319,7 +339,7 @@
             document.addEventListener('init', function(event) {            
                 var page = event.target;           
 
-                 // load list of wines on home page
+                //  load list of wines on home page
                  if(page.id === 'home-temp'){
 
                     // loadWineList(page);
@@ -327,93 +347,131 @@
 
                 // load selected wine page
                 if(page.id === 'single-temp'){
-                    page.querySelector('ons-toolbar .center').innerHTML = page.data.cWine.title;
+                    page.querySelector('ons-toolbar .center').innerHTML = page.data.jobs.jobtitle;
 
-                    page.querySelector('#singleImg').src = page.data.cWine.path;
-                    page.querySelector('#singleTitle').innerHTML = page.data.cWine.title;
-                    page.querySelector('#singleContent').innerHTML = page.data.cWine.desc;
+                    page.querySelector('#singleTitle').innerHTML = page.data.jobs.jobtitle;
+                    page.querySelector('#singleSalary').innerHTML = page.data.jobs.salary;
+                    page.querySelector('#singleCity').innerHTML = page.data.jobs.city;
+                    page.querySelector('#singleSeniority').innerHTML = page.data.jobs.seniority;
+                    page.querySelector('#singleFirmType').innerHTML = page.data.jobs.firmtype;
+
+                    page.querySelector('#meal').innerHTML = page.data.city.meal;
                 }             
             }); 
     
-            // Function to dynamically display wine list
-            function loadWineList(page) {
-                // select the list element 
-                var dynList = page.querySelector('#dynamic-list');
 
-                // Add list items in the DOM 
-                for(let i = 0; i < wineList.length; i++) {
+        function submitSearch(){
+            var page = document.getElementById('home-temp')
+            
+            var searchParam = {
+                city: page.querySelector('#city').value,
+                experience: page.querySelector('#experience').value,
+                seniority: page.querySelector('#seniority').value
+            }
+
+            // console.log(searchParam);
+
+            loadJobsList(searchParam);
+        }
+
+        function loadJobsList(result){
+            var spinnerModal = document.querySelector('#spinner-modal');
+            spinnerModal.show();
+            $.ajax('https://MDIA4295.verdipang.ca/dataset/read.php?city=' + result.city +'&experience='+ result.experience + '&seniority=' + result.seniority)
+                .done(function(result){
+                    // console.log(result);
+                    populateJobsList(result);
+                })
+                .fail(function(xhr,status,error){
+                    console.log('error:' + xhr.status);
+                })
+                .always(function(){
+                    spinnerModal.hide();
+                })
+        }
+
+        function populateJobsList(result) {
+            // select the list element
+            var page = document.getElementById('home-temp');
+            var dynList = page.querySelector('#dynamic-list');
+
+            dynList.querySelectorAll('ons-list-item').forEach(n => n.remove());
+            var newArray = [];
+
+            // console.log(result.jobs[0]);
+            //Add list items in the DOM 
+            // for(let i = 0; i < result.count; i++) {
+            //      newArray.push(
+            //         {city: result.jobs[i].city,
+            //         country: result.jobs[i].country,
+            //         experience: result.jobs[i].experience,
+            //         firmtype: result.jobs[i].firmtype,
+            //         jobtitle: result.jobs[i].jobtitle,
+            //         salary: result.jobs[i].salary,
+            //         seniority: result.jobs[i].seniority
+            //         },
+            //      );
+            // }
+            // console.log(newArray[0]);
+
+            
+            for(let i = 0; i < result.count; i++) {
+                // var inputArray = JSON.stringify(newArray[i]);
+                // console.log(inputArray);
+                // newArray.push(
+                //     {city: result.jobs[i].city,
+                //     country: result.jobs[i].country,
+                //     experience: result.jobs[i].experience,
+                //     firmtype: result.jobs[i].firmtype,
+                //     jobtitle: result.jobs[i].jobtitle,
+                //     salary: result.jobs[i].salary,
+                //     seniority: result.jobs[i].seniority
+                //     },
+                //  )
                 dynList.appendChild(
                     ons.createElement(
-                        '<ons-list-item>' + 
-                            '<div class="left"><img class="list-item__thumbnail" src="' + wineList[i].path + '"></div>' + 
-                            '<div class="center"><span class="list-item__title">' + wineList[i].title + '</span><span class="list-item__subtitle">' + wineList[i].desc + '</span></div>' + 
-                            // Button to push page into single view
-                            '<div class="right"><ons-button onclick="pushSingleView(' + i +')" icon="md-caret-right"></ons-button></div>' +
-                            '</ons-list-item>'
-                        )
-                    );
-                }
+                        
+                        '<ons-list-item>' +
+                            '<div class="center">' +
+                                '<span id="salary" class="list-item__title">CAD $ ' + result.jobs[i].salary + '</span>' +
+                                '<span id="city" class="list-item__subtitle">'+ result.jobs[i].city +' | ' + result.jobs[i].experience + ' | ' + result.jobs[i].seniority + '</span>' +
+                            '</div>' +
+                            '<div class="right"><ons-button onclick="pushSingleView(\'' + result.jobs[i].id + '\')" icon="md-caret-right"></ons-button></div>' + 
+                        '</ons-list-item>'
+                        
+                    )
+                );
             }
+        }
 
+        // push single page onto stack
+        function pushSingleView(id){
 
-            // push single page onto stack
-            function pushSingleView(fIndex){
-                // get the current wine from the wineList data 
-                var currWine = wineList[Number.parseInt(fIndex)];
+            $.ajax('https://MDIA4295.verdipang.ca/dataset/read.php?id=' + id)
+                .done(function(result){
+                    // console.log(result);
+                    createSignleView(result);
+                    // document.querySelector('#myNavigator').pushPage('single.html');
+                })
+                .fail(function(xhr,status,error){
+                    console.log('error:' + xhr.status);
+                })
+            // get the current wine from the wineList data 
+            // var currWine = wineList[Number.parseInt(fIndex)];
 
-                // push the single page view on the stack 
-                document.querySelector('#myNavigator').pushPage('single.html', {data: {cWine: currWine}});
+            // push the single page view on the stack 
+            // document.querySelector('#myNavigator').pushPage('single.html', {data: {cWine: currWine}});
+        }
 
-            }
-
-            function submitSearch(){
-                var page = document.getElementById('home-temp')
-                
-                var searchParam = {
-                    city: page.querySelector('#city').value,
-                    experience: page.querySelector('#experience').value,
-                    seniority: page.querySelector('#seniority').value
-                }
-
-                // console.log(searchParam);
-
-                loadJobsList(searchParam);
-            }
-
-            function loadJobsList(result){
-                $.ajax('https://MDIA4295.verdipang.ca/dataset/read.php?city=' + result.city +'&experience='+ result.experience + '&seniority=' + result.seniority)
-                    .done(function(result){
-                        console.log(result);
-                        populateJobsList(result);
-                    })
-                    .fail(function(xhr,status,error){
-                        console.log('error:' + xhr.status);
-                    })
-            }
-
-            function populateJobsList(result) {
-                // select the list element
-                var page = document.getElementById('home-temp');
-                var dynList = page.querySelector('#dynamic-list');
-
-                dynList.querySelectorAll('ons-list-item').forEach(n => n.remove());
-
-                console.log(result.jobs[0]);
-                // Add list items in the DOM 
-                for(let i = 0; i < result.count; i++) {
-                    console.log(result.jobs[i].salary);
-                    dynList.appendChild(
-                        ons.createElement(
-                            '<ons-list-item>' +
-                                '<div class="center">' +
-                                    '<span id="salary" class="list-item__title">CAD$' + result.jobs[i].salary + '</span>' +
-                                    '<span id="city" class="list-item__subtitle">'+ result.jobs[i].city +' | ' + result.jobs[i].experience + ' | ' + result.jobs[i].seniority + '</span>' +
-                                '</div>' +
-                                '<div class="right"><ons-button icon="md-caret-right"></ons-button></div>' + 
-                            '</ons-list-item>'
-                            )
-                    );
-                }
-            }
+        function createSignleView(result){
+            var currJob = result.jobs[0];
+            var currCity = result.jobs[0].city;
+            var selectedCity = cityCosts[city[currCity]]
+            console.log(currCity);
+            
+            // var page = document.getElementById('single-temp');
+            // page.querySelector('#singleTitle').innerHTML = result.jobs[0].jobtitle;
+            document.querySelector('#myNavigator').pushPage('single.html', {data: {jobs: currJob}})
+        }
     </script>
 </html>

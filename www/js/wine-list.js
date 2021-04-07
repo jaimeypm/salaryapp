@@ -6,3 +6,4 @@ var wineList = [
     { title:'J Lohr Cabernet Sauvignon', path:'./img/wine/jlohr.jpg', desc:'$21.99'},
     { title:'Dr Loosen Reisling', path:'./img/wine/loosen.jpg', desc:'$18.99'},
 ];
+
