@@ -8,6 +8,7 @@
 
         <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
         <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
         <script src="./lib/onsenui/js/onsenui.min.js"></script>
 
         <link rel="stylesheet" type="text/css" href="css/common.css">        
@@ -21,7 +22,7 @@
             <ons-page id="signup-temp">
                 <br /><br />  
                 <ons-toolbar>  
-                    <div class="center">Sign Up</div>  
+                    <div class="center">Log In</div>  
                 </ons-toolbar>  
                 <!-- Information fields -->
                 <div style="text-align: center; margin-top: 30px;">  
@@ -31,21 +32,129 @@
                     <p>  
                         <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>  
                     </p>
-                    <p>  
+                    <!-- <p>  
                         <ons-input id="passwordConfirm" modifier="underbar" type="password" placeholder="Confirm Password" float></ons-input>  
-                    </p>  
+                    </p>   -->
                     <p style="margin-top: 30px;">  
-                        <ons-button onclick="signup()">Sign Up</ons-button>  
-                    </p>  
+                        <ons-button onclick="logIn()">Log In</ons-button>  
+                    </p>
+                    
+                    <p style="margin-top: 30px;">
+                        <span onclick="createAccount_1()">Create an account</span>
+                    </p>
                 </div>  
           </ons-page>
         </template>
+
+        <!-- create account page 1 -->
+        <template id="createAccount_1.html">
+            <ons-page id="createAccount-temp">
+                <br /><br />
+                <ons-toolbar>
+                    <div class="center">Sign up</div>
+                </ons-toolbar>
+
+                <!-- input fields -->
+                <div class="center">
+                    <ons-card>
+                        <!-- first row - name -->
+                        <ons-row>
+                            <ons-col width="100%">
+                                <ons-input placeholder="name"></ons-input>
+                            </ons-col>  
+                        </ons-row>
+                        <!-- second row - age & gender -->
+                        <ons-row>
+                            <ons-col>
+                                <ons-input placeholder="age"></ons-input>
+                            </ons-col>
+                            <ons-col>
+                                <ons-input placeholder="gender"></ons-input>
+                            </ons-col>
+                        </ons-row>
+                        <!-- third row - location input -->
+                        <ons-row>
+                            <ons-col width="100%">
+                                <ons-input placeholder="location"></ons-input>
+                            </ons-col>  
+                        </ons-row>
+                        <!-- fourth row - student/working radio -->
+                        <ons-row>
+                            <ons-col>
+                                <label class="radio-button">
+                                    <ons-radio class="radio-button__input radio-button--material__input">Student</ons-radio>
+                                </label>
+                            </ons-col>
+                            <ons-col>
+                                <ons-radio>Working</ons-radio>
+                            </ons-col>
+                        </ons-row>
+                        <!-- fifth row - next button -->
+                        <ons-row>
+                            <ons-col>
+                                <ons-button class="button--large--cta" onclick="createAccount_2()">Next</ons-button>
+                            </ons-col>
+                        </ons-row>
+                    </ons-card>
+                </div>
+            </ons-page>
+        </template>
+        <!-- End of create account page 1 -->
+
+        <!-- create account page 2 -->
+        <template id="createAccount_2.html">
+            <ons-page id="createAccount-temp">
+                <br /><br />
+                <ons-toolbar>
+                    <div class="center">Sign up</div>
+                </ons-toolbar>
+
+                <!-- input fields -->
+                <div class="center">
+                    <ons-card>
+                        <!-- first row - name -->
+                        <ons-row>
+                            <ons-col width="100%">
+                                <ons-input placeholder="Job Title"></ons-input>
+                            </ons-col>  
+                        </ons-row>
+                        <!-- second row - age & gender -->
+                        <ons-row>
+                            <ons-col width="100%">
+                                <ons-input placeholder="Years of experience"></ons-input>
+                            </ons-col>
+                        </ons-row>
+                        <!-- third row - location input -->
+                        <ons-row>
+                            <ons-col width="100%">
+                                <ons-input placeholder="Firm type"></ons-input>
+                            </ons-col>  
+                        </ons-row>
+                        <!-- fourth row - student/working radio -->
+                        <ons-row>
+                            <ons-col width="100%">
+                                <ons-input placeholder="Salary"></ons-input>
+                            </ons-col>
+                        </ons-row>
+                        <!-- fifth row - next button -->
+                        <ons-row>
+                            <ons-col>
+                                <ons-button class="button--large--cta" onclick="createAccount_done()">Done</ons-button>
+                            </ons-col>
+                        </ons-row>
+                    </ons-card>
+                </div>
+            </ons-page>
+        </template>
+        <!-- End of create account page 2 -->
+
 
         <!-- Home Page -->
         <template id="home.html">
             <ons-page id="home-temp">
                 <ons-toolbar>
                     <div class="center">Home</div>
+                    <div class="right"><ons-button onclick="logOut()" style="padding-top: 10px;padding-right: 10px;">Log Out</ons-button></div>
                 </ons-toolbar>
                 <ons-list-header>Wine List</ons-list-header>
                 
@@ -80,6 +189,26 @@
     <script src="./js/wine-list.js"></script>
 
     <script>
+        var logIn = function() {
+            myNavigator.resetToPage('home.html')
+        };
+
+        var logOut = function() {
+            myNavigator.resetToPage('signup.html')
+        };
+
+        var createAccount_1 = function(){
+            myNavigator.pushPage('createAccount_1.html')
+        };
+
+        var createAccount_2 = function(){
+            myNavigator.pushPage('createAccount_2.html')
+        };
+
+        var createAccount_done = function (){
+            myNavigator.resetToPage('home.html')
+        };
+
 
         // Sign up function
         var signup = function() {  
@@ -103,7 +232,7 @@
                 ons.notification.alert('Congratulations! You have successfully signed up.');  
                 
                 // Redirect to home page
-                myNavigator.pushPage('home.html')
+                myNavigator.resetToPage('home.html')
             }
         };  
 
