@@ -193,19 +193,20 @@
                     </div>
 
                     <!-- Salary dropdown -->
-                    <!-- <div class="form-group" style="padding:10px;"> 
-                        <label for="salary">Years of experience</label>
+                    <div class="form-group" style="padding:10px;"> 
+                        <label for="salary">Annual Salary</label>
                         <div>
                             <ons-select select-id="salary" class="form-field-full" modifier="underbar">
+                                <option value="0">Select a value</option>
                                 <option value="1">under $29,999</option>
                                 <option value="2">$30,000 - $49,999</option>
-                                <option value="3">$50,000 - $79,999</option>
+                                <option value="3" selected>$50,000 - $79,999</option>
                                 <option value="4">$80,000 - $129,999</option>
                                 <option value="5">$130,000 - $179,999</option>
                                 <option value="6">$180,000 +</option>
                             </ons-select>
                         </div>
-                    </div> -->
+                    </div>
 
                     <!-- Seniority dropdown -->
                     <div class="form-group" style="padding:10px;"> 
@@ -266,10 +267,10 @@
                     <div class="title" id="singleFirmType"></div>
                 </ons-card>
                 <ons-card>
-                    <div class="title" id="meal"></div>
-                    <div class="title" id="gas"></div>
-                    <div class="title" id="internet"></div>
-                    <div class="title" id="rent"></div>
+                    <div class="title">2 person meal : <span id="meal"></span></div>
+                    <div class="title">Gas Price : <span id="gas"></span></div>
+                    <div class="title">Internet per month : <span id="internet"></span></div>
+                    <div class="title">1 bedroom apartment in city center : <span id="rent"></span></div>
                 </ons-card>
             </ons-page>
         </template>
@@ -347,29 +348,77 @@
 
                 // load selected wine page
                 if(page.id === 'single-temp'){
-                    page.querySelector('ons-toolbar .center').innerHTML = page.data.jobs.jobtitle;
-
-                    page.querySelector('#singleTitle').innerHTML = page.data.jobs.jobtitle;
-                    page.querySelector('#singleSalary').innerHTML = page.data.jobs.salary;
-                    page.querySelector('#singleCity').innerHTML = page.data.jobs.city;
-                    page.querySelector('#singleSeniority').innerHTML = page.data.jobs.seniority;
-                    page.querySelector('#singleFirmType').innerHTML = page.data.jobs.firmtype;
-
-                    page.querySelector('#meal').innerHTML = page.data.city.meal;
+                    populateSingle(page, page.data.job);
+                    
                 }             
             }); 
+
+        function populateSingle(page, job){
+            console.log(job);
+            var currJobCity = job.city;
+            var currCity = cityCosts.find(({city})=> city === currJobCity);
+            console.log(currCity);
+            page.querySelector('ons-toolbar .center').innerHTML = job.jobtitle;
+
+            page.querySelector('#singleTitle').innerHTML = job.jobtitle;
+            page.querySelector('#singleSalary').innerHTML = job.salary;
+            page.querySelector('#singleCity').innerHTML = job.city;
+            page.querySelector('#singleSeniority').innerHTML = job.seniority;
+            page.querySelector('#singleFirmType').innerHTML = job.firmtype;
+
+            page.querySelector('#meal').innerHTML = currCity.food;
+            page.querySelector('#gas').innerHTML = currCity.gas;
+            page.querySelector('#internet').innerHTML = currCity.internet;
+            page.querySelector('#rent').innerHTML = currCity.rent;
+        }
     
 
         function submitSearch(){
-            var page = document.getElementById('home-temp')
+            var page = document.getElementById('home-temp');
+            var min_salary_input;
+            var max_salary_input;
+            var salaryCase = page.querySelector('#salary').value;
+
             
+            switch(salaryCase){
+                case '0':
+                    break;
+                case '1':
+                    min_salary_input = 0;
+                    max_salary_input = 29999;
+                    break;
+                case '2':
+                    min_salary_input = 30000;
+                    max_salary_input = 49999;
+                    break;
+                case '3':
+                    min_salary_input = 50000;
+                    max_salary_input = 79999;
+                    break;
+                case '4':
+                    min_salary_input = 80000;
+                    max_salary_input = 129999;
+                    break;
+                case '5': 
+                    min_salary_input = 130000;
+                    max_salary_input = 179999;
+                    break;
+                case '6':
+                    min_salary = 180000;
+                    break;
+            }
+            console.log('T1:'+ salaryCase);
+            console.log('T2:'+ min_salary_input);
+            console.log('T3:'+ max_salary_input);
+
             var searchParam = {
                 city: page.querySelector('#city').value,
                 experience: page.querySelector('#experience').value,
-                seniority: page.querySelector('#seniority').value
+                seniority: page.querySelector('#seniority').value,
+                min_salary: min_salary_input,
+                max_salary: max_salary_input
             }
 
-            // console.log(searchParam);
 
             loadJobsList(searchParam);
         }
@@ -377,7 +426,7 @@
         function loadJobsList(result){
             var spinnerModal = document.querySelector('#spinner-modal');
             spinnerModal.show();
-            $.ajax('https://MDIA4295.verdipang.ca/dataset/read.php?city=' + result.city +'&experience='+ result.experience + '&seniority=' + result.seniority)
+            $.ajax('https://MDIA4295.verdipang.ca/dataset/read.php?city=' + result.city +'&experience='+ result.experience + '&seniority=' + result.seniority + '&min_salary=' + result.min_salary + '&max_salary=' + result.max_salary)
                 .done(function(result){
                     // console.log(result);
                     populateJobsList(result);
@@ -396,38 +445,9 @@
             var dynList = page.querySelector('#dynamic-list');
 
             dynList.querySelectorAll('ons-list-item').forEach(n => n.remove());
-            var newArray = [];
 
-            // console.log(result.jobs[0]);
-            //Add list items in the DOM 
-            // for(let i = 0; i < result.count; i++) {
-            //      newArray.push(
-            //         {city: result.jobs[i].city,
-            //         country: result.jobs[i].country,
-            //         experience: result.jobs[i].experience,
-            //         firmtype: result.jobs[i].firmtype,
-            //         jobtitle: result.jobs[i].jobtitle,
-            //         salary: result.jobs[i].salary,
-            //         seniority: result.jobs[i].seniority
-            //         },
-            //      );
-            // }
-            // console.log(newArray[0]);
-
-            
             for(let i = 0; i < result.count; i++) {
-                // var inputArray = JSON.stringify(newArray[i]);
-                // console.log(inputArray);
-                // newArray.push(
-                //     {city: result.jobs[i].city,
-                //     country: result.jobs[i].country,
-                //     experience: result.jobs[i].experience,
-                //     firmtype: result.jobs[i].firmtype,
-                //     jobtitle: result.jobs[i].jobtitle,
-                //     salary: result.jobs[i].salary,
-                //     seniority: result.jobs[i].seniority
-                //     },
-                //  )
+
                 dynList.appendChild(
                     ons.createElement(
                         
@@ -449,9 +469,7 @@
 
             $.ajax('https://MDIA4295.verdipang.ca/dataset/read.php?id=' + id)
                 .done(function(result){
-                    // console.log(result);
                     createSignleView(result);
-                    // document.querySelector('#myNavigator').pushPage('single.html');
                 })
                 .fail(function(xhr,status,error){
                     console.log('error:' + xhr.status);
@@ -465,13 +483,15 @@
 
         function createSignleView(result){
             var currJob = result.jobs[0];
-            var currCity = result.jobs[0].city;
-            var selectedCity = cityCosts[city[currCity]]
-            console.log(currCity);
+            
+            // console.log(currCity);
+
+            // var selectedCity = cityCosts[city[currCity]]
+            // console.log(currCity);
             
             // var page = document.getElementById('single-temp');
             // page.querySelector('#singleTitle').innerHTML = result.jobs[0].jobtitle;
-            document.querySelector('#myNavigator').pushPage('single.html', {data: {jobs: currJob}})
+            document.querySelector('#myNavigator').pushPage('single.html', {data: {job: currJob}})
         }
     </script>
 </html>
