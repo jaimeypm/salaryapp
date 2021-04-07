@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
+        <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
+        <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.min.css">
+        <script src="./lib/onsenui/js/onsenui.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/common.css">        
+    </head>
+    <body>
+        <ons-page>
+            <ons-toolbar>
+                <div class="center">Tab Nav</div>
+                <div class="right">
+                    <ons-toolbar-button id="home-button"> 
+                        <ons-icon icon="md-home"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>         
+              
+            <ons-tabbar swipeable position="bottom">
+                <ons-tab page="one-temp" label="Tab 1" icon="fa-dice-one" active></ons-tab>
+                <ons-tab page="two-temp" label="Tab 2" icon="fa-dice-two"></ons-tab>
+                <ons-tab page="three-temp" label="Tab 3" icon="fa-dice-three"></ons-tab>
+              </ons-tabbar>
+        </ons-page>
+
+        <template id="one-temp">
+            <ons-page id="one-page">
+                <ons-card>
+                    <div class="title">Tab 1</div>
+                </ons-card>
+            </ons-page>
+        </template>
+          
+        <template id="two-temp">
+            <ons-page id="two-page">
+                <ons-card>
+                    <div class="title">Tab 2</div>
+                </ons-card>
+            </ons-page>
+        </template>
+
+        <template id="three-temp">
+            <ons-page id="three-page">
+                <ons-card>
+                    <div class="title">Tab 3</div>
+                </ons-card>
+            </ons-page>
+        </template>
+        
+
+        <script type="text/javascript" src="cordova.js"></script>        
+            
+        <script>
+            // doesn't need to be in an init since it's in the root element
+            document.querySelector('#home-button').onclick = function() {
+                    window.location = './index.html';
+            }; 
+        </script>
+    </body>
+</html>
+
+
+

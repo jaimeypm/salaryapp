@@ -1,0 +1,136 @@
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
+        <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
+        <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.min.css">
+        <script src="./lib/onsenui/js/onsenui.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/common.css">        
+    </head>
+    <body>
+        <ons-navigator id="myNavigator" page="main-temp"></ons-navigator>
+
+        <template id="main-temp">
+            <ons-page id="main-page">
+                <ons-toolbar>
+                    <div class="center">Stacking Nav</div>
+
+                    <div class="right">
+                        <ons-toolbar-button id="home-button"> 
+                            <ons-icon icon="md-home"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                </ons-toolbar>
+
+                <ons-card>
+                    <div class="content-item">
+                        <ons-button class="btn-link" data-src="example2.html" onclick="pushPageOne()">Page 1</ons-button>
+                        <div>Just push the page.</div>
+                    </div>           
+        
+                    <div class="content-item">
+                        <ons-button class="btn-link" data-src="example3.html" onclick="pushPageTwo()">Page 2</ons-button>
+                        <div>Push and pass data.</div>
+                    </div>  
+                    
+                    <div>
+                        <ons-switch id="mySwitch" input-id="myChk" checked></ons-switch>
+                    </div>
+
+                </ons-card>
+            </ons-page>
+        </template>
+
+        <template id="one-temp">
+            <ons-page id="one-page">
+                <ons-toolbar>
+                    <div class="left"><ons-back-button>Back</ons-back-button></div>
+                    <div class="center">Page One</div>
+                </ons-toolbar>
+
+                <ons-card>                    
+                    <div class="title" >Page One</div>
+                    <div class="content">
+                        <p>Use back button in toolbar to go back or button below.</p>
+
+                        <div class="content-item">
+                            <ons-button class="btn-link" onclick="goBack()">Go Back</ons-button>
+                        </div>
+                    </div>                    
+                </ons-card>
+            </ons-page>
+        </template>
+
+        <template id="two-temp">
+            <ons-page id="two-page">
+                <ons-toolbar>
+                    <div class="left"><ons-back-button>Back</ons-back-button></div>
+                    <div class="center">Page Two</div>
+                </ons-toolbar>
+
+                <ons-card>                    
+                    <div class="title" >Page Two</div>
+                        <p>
+                            Passed data:<span id="dynData" style="color: #0000ff;"></span>
+                        </p>
+
+                        <p>Use back button in toolbar to go back or button below.</p>
+
+                        <div class="content-item">
+                            <ons-button class="btn-link" onclick="goBack()">Go Back</ons-button>
+                        </div>
+                    </div>
+                </ons-card>
+            </ons-page>
+        </template>
+        
+        <script type="text/javascript" src="cordova.js"></script>        
+
+        <script>
+            // any event managers or other funcationality that should wait intil the page init has completed
+            document.addEventListener('init', function(event) {            
+                var page = event.target;           
+
+                 // home button is only on the main page
+                 if(page.id === 'main-page'){
+                        page.querySelector('#home-button').onclick = function() {
+                        window.location = './index.html';
+                    }; 
+                }              
+
+                if(page.id === 'two-page'){
+                    page.querySelector('#dynData').innerHTML = page.data.sData.greeting + ' ' + page.data.sData.name;
+                    
+                }
+            });       
+
+            function pushPageOne(){
+
+                // no data passed
+                document.querySelector('#myNavigator').pushPage('one-temp');
+            }     
+
+            function pushPageTwo(){
+
+                var sampleData = {
+                    greeting: "Hola",
+                    name: "Bob"
+                }
+
+                // data passed
+                document.querySelector('#myNavigator').pushPage('two-temp', {data: {sData: sampleData}});
+            }     
+
+
+            function goBack(){
+                document.querySelector('#myNavigator').popPage();
+            }
+        </script>
+
+    </body>
+</html>

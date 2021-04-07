@@ -1,0 +1,74 @@
+/********** INDEX PAGE CLASSES ********/
+.head-icon{    
+    padding: 15px 25px;    
+    text-align: center;
+}
+
+.head-icon img{
+    max-width: 75%;    
+}
+
+.content-item{
+    display: flex;
+    margin:15px;
+    align-items: center;
+}
+
+.content-item div{
+    margin-left: 15px;
+}
+
+.btn-link{
+    min-width: 120px;
+}
+
+/********** EXAMPLE 1 CLASSES ********/
+
+.message-list-item{
+    display: flex;
+    align-items: center;
+}
+
+img.message-list-thumb{
+    width: 75px; 
+    border-radius: 50%;    
+}
+
+img.message-list-unread{
+    border: solid 1px blue;    
+}
+
+.message-list-left{
+    width: 75px;    
+}
+
+.message-list-right{
+    padding-left: 15px;
+    flex-grow: 1;
+}
+
+.message-list-heading{
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.message-list-subhead{
+    font-size: 1em;
+}
+
+ons-pull-hook.message-refresh{
+    font-size: 2em;
+}
+
+.pull-spinner{
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.pull-spinner-icon{
+    margin-right: 15px;
+    font-size: 2em;
+}
+

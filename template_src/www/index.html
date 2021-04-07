@@ -1,0 +1,161 @@
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
+        <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
+        <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.min.css">
+        <script src="./lib/onsenui/js/onsenui.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/common.css">        
+    </head>
+    <body>
+
+        <ons-navigator swipeable id="myNavigator" page="signup.html"></ons-navigator>
+
+        <!-- Sign Up Process -->
+        <template id="signup.html">
+            <ons-page id="signup-temp">
+                <br /><br />  
+                <ons-toolbar>  
+                    <div class="center">Sign Up</div>  
+                </ons-toolbar>  
+                <!-- Information fields -->
+                <div style="text-align: center; margin-top: 30px;">  
+                    <p>  
+                        <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>  
+                    </p>  
+                    <p>  
+                        <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>  
+                    </p>
+                    <p>  
+                        <ons-input id="passwordConfirm" modifier="underbar" type="password" placeholder="Confirm Password" float></ons-input>  
+                    </p>  
+                    <p style="margin-top: 30px;">  
+                        <ons-button onclick="signup()">Sign Up</ons-button>  
+                    </p>  
+                </div>  
+          </ons-page>
+        </template>
+
+        <!-- Home Page -->
+        <template id="home.html">
+            <ons-page id="home-temp">
+                <ons-toolbar>
+                    <div class="center">Home</div>
+                </ons-toolbar>
+                <ons-list-header>Wine List</ons-list-header>
+                
+                <!-- Display wine list dynamically -->
+                <ons-list>
+                    <ons-lazy-repeat id="dynamic-list"></ons-lazy-repeat>
+                </ons-list>                      
+            </ons-page>
+        </template>
+
+        <!-- Single Product Page -->
+        <template id="single.html">
+            <ons-page id="single-temp">
+                <ons-toolbar>
+                    <!-- Button to pop page back to home -->
+                    <div class="left"><ons-back-button>Back</ons-back-button></div>
+                    <div class="center"></div>
+                </ons-toolbar>
+
+                <!-- Display wine information -->
+                <ons-card>
+                    <div><img style="max-width: 100%;" id="singleImg"></div>
+                    <div class="title" id="singleTitle" ></div>
+                    <div class="content" id="singleContent" ></div>
+                </ons-card>
+            </ons-page>
+        </template>
+        
+    </body>
+
+    <script src="./js/index.js"></script>
+    <script src="./js/wine-list.js"></script>
+
+    <script>
+
+        // Sign up function
+        var signup = function() {  
+            var user = document.getElementById('username').value;  
+            var pw = document.getElementById('password').value;  
+            var pwConfirm = document.getElementById('passwordConfirm').value;
+
+            // If passwords don't match
+            if (pw !== pwConfirm) {  
+                ons.notification.alert('Please make sure both passwords match');  
+            // If both password fields are empty
+            } else if (pw == 0 || pwConfirm == 0) {  
+                ons.notification.alert('Please enter a password'); 
+
+            // If user field is empty
+            } else if (user == 0) {  
+                ons.notification.alert('Please enter a username'); 
+
+            // If passwords match 
+            }  else {
+                ons.notification.alert('Congratulations! You have successfully signed up.');  
+                
+                // Redirect to home page
+                myNavigator.pushPage('home.html')
+            }
+        };  
+
+        // any even managers or other funcationality that should wait intil the page init has completed
+            document.addEventListener('init', function(event) {            
+                var page = event.target;           
+
+                 // load list of wines on home page
+                 if(page.id === 'home-temp'){
+
+                    loadWineList(page);
+                } 
+
+                // load selected wine page
+                if(page.id === 'single-temp'){
+                    page.querySelector('ons-toolbar .center').innerHTML = page.data.cWine.title;
+
+                    page.querySelector('#singleImg').src = page.data.cWine.path;
+                    page.querySelector('#singleTitle').innerHTML = page.data.cWine.title;
+                    page.querySelector('#singleContent').innerHTML = page.data.cWine.desc;
+                }             
+            }); 
+    
+            // Function to dynamically display wine list
+            function loadWineList(page) {
+                // select the list element 
+                var dynList = page.querySelector('#dynamic-list');
+
+                // Add list items in the DOM 
+                for(let i = 0; i < wineList.length; i++) {
+                dynList.appendChild(
+                    ons.createElement(
+                        '<ons-list-item>' + 
+                            '<div class="left"><img class="list-item__thumbnail" src="' + wineList[i].path + '"></div>' + 
+                            '<div class="center"><span class="list-item__title">' + wineList[i].title + '</span><span class="list-item__subtitle">' + wineList[i].desc + '</span></div>' + 
+                            // Button to push page into single view
+                            '<div class="right"><ons-button onclick="pushSingleView(' + i +')" icon="md-caret-right"></ons-button></div>' +
+                            '</ons-list-item>'
+                        )
+                    );
+                }
+            }
+
+
+            // push single page onto stack
+            function pushSingleView(fIndex){
+                // get the current wine from the wineList data 
+                var currWine = wineList[Number.parseInt(fIndex)];
+
+                // push the single page view on the stack 
+                document.querySelector('#myNavigator').pushPage('single.html', {data: {cWine: currWine}});
+
+            }
+    </script>
+</html>

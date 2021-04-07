@@ -1,0 +1,135 @@
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
+        <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
+        <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.min.css">
+        <script src="./lib/onsenui/js/onsenui.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/common.css">        
+    </head>
+    <body>
+
+        <ons-navigator swipeable id="myNavigator" page="signup-temp"></ons-navigator>
+
+        <!-- Sign Up Process -->
+        <template id="signup-temp">
+            <ons-page id="signup">
+                <br /><br />  
+                <ons-toolbar>  
+                    <div class="center">Sign Up</div>  
+                </ons-toolbar>  
+                <div style="text-align: center; margin-top: 30px;">  
+                    <p>  
+                        <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>  
+                    </p>  
+                    <p>  
+                        <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>  
+                    </p>
+                    <p>  
+                        <ons-input id="passwordConfirm" modifier="underbar" type="password" placeholder="Confirm Password" float></ons-input>  
+                    </p>  
+                    <p style="margin-top: 30px;">  
+                        <ons-button onclick="signup()">Sign Up</ons-button>  
+                    </p>  
+                </div>  
+          </ons-page>
+        </template>
+
+        <!-- Home Page -->
+        <template id="home-temp">
+            <ons-page id="home-temp">
+                <ons-toolbar>
+                    <div class="center">Home</div>
+                </ons-toolbar>
+
+                <ons-list-header>Wine List</ons-list-header>
+                <!--
+                <ons-list-item>
+                    <div class="left">
+                        <img class="list-item__thumbnail" src="./img/flowers/flower-01-md.png">
+                    </div>
+                    <div class="center">
+                        <span class="list-item__title">FLower 1</span><span class="list-item__subtitle">It's a flower</span>
+                    </div>
+                    <div class="right">                        
+                        <ons-button onclick="pushSingleView(0)" icon="md-caret-right"></ons-button>
+                    </div>
+    
+                </ons-list-item>
+                -->
+                <ons-list>
+                    <ons-lazy-repeat id="dynamic-list"></ons-lazy-repeat>
+                </ons-list>                      
+            </ons-page>
+        </template>
+
+        <!-- Single Product Page -->
+        <template id="single-temp">
+            <ons-page id="single-temp">
+                <ons-toolbar>
+                    <div class="left"><ons-back-button>Back</ons-back-button></div>
+                    <div class="center"></div>
+                </ons-toolbar>
+
+                <ons-card>
+                    <div><img style="max-width: 100%;" id="singleImg"></div>
+                    <div class="title" id="singleTitle" ></div>
+                    <div class="content" id="singleContent" ></div>
+                </ons-card>
+            </ons-page>
+        </template>
+        
+    </body>
+
+    <script src="./js/index.js"></script>
+    <script src="./js/flower-data.js"></script>
+
+    <script>
+            // fires after the app is initialized 
+            ons.ready(function() {
+
+                // the lazy list element
+                var dynList = document.getElementById('dynamic-list');
+
+                // delegate is a member of the lazy list, it has a number of members
+                dynList.delegate = {
+
+                    // can return any DOM element which will be added at index i
+                    // can also use template binding which we'll look at another time
+                    createItemContent: function(i, template) {
+                        return ons.createElement(
+                            '<ons-list-item>' + 
+                            '<div class="left"><img class="list-item__thumbnail" src="' + flowerData[i].path + '"></div>' + 
+                            '<div class="center"><span class="list-item__title">' + flowerData[i].title + '</span><span class="list-item__subtitle">' + flowerData[i].desc + '</span></div>' + 
+                            '<div class="right"><ons-button onclick="pushSingleView(' + i +')" icon="md-caret-right"></ons-button></div>' +
+                            '</ons-list-item>');
+                    },
+
+                    // provides a means for the list to know it's total items, in this case just using the array length
+                    countItems: function() {
+                        return flowerData.length;
+                    }
+
+                    // other delegates include: calculateItemHeight and destroyItem
+                    
+                };
+
+                dynList.refresh();
+            });
+
+            // fired by each button in the list
+            function pushSingleView(fIndex){
+                // get the current flower from the data set based on the passed index
+                var currFlower = flowerData[Number.parseInt(fIndex)];
+
+                // push the single page view on the stack and also add the current flower as a data member
+                document.querySelector('#myNavigator').pushPage('single-temp', {data: {cFlower: currFlower}});
+
+            }
+    </script>
+</html>

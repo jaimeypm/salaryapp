@@ -1,0 +1,159 @@
+<html>
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+
+        <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
+        <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.min.css">
+        <script src="./lib/onsenui/js/onsenui.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="css/common.css">        
+    </head>
+    <body>
+        <ons-splitter>
+            <!-- the splitter-side is in this case the menu but could also be help notes, hidden tools etc. -->
+            <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+                <!-- the menu should be contained in an ons-page -->
+                <ons-page>
+                    <ons-list>
+                        <ons-list-item onclick="splitterFunc.load('one-temp')" tappable>Page 1</ons-list-item>
+                        <ons-list-item onclick="splitterFunc.load('two-temp')" tappable>Page 2</ons-list-item>
+                        <ons-list-item onclick="splitterFunc.load('three-temp')" tappable>Page 3</ons-list-item>
+                    </ons-list>
+                </ons-page>
+            </ons-splitter-side>
+
+            <!-- the content area that the templates are loaded into -->
+            <ons-splitter-content id="content" page="one-temp"></ons-splitter-content>
+        </ons-splitter>
+          
+        <template id="one-temp">
+            <ons-page id="one-page">
+                <ons-toolbar>
+                    <div class="left">                        
+                        <ons-toolbar-button onclick="splitterFunc.open()">                            
+                            <ons-icon icon="md-menu"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                    
+                    <div class="center">
+                        Page 1
+                    </div>
+
+                    <div class="right">
+                        <ons-toolbar-button id="home-button"> 
+                            <ons-icon icon="md-home"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                </ons-toolbar>
+
+                <ons-card>
+                    <div class="title">Page 1</div>
+                </ons-card>
+            </ons-page>
+        </template>
+          
+        <template id="two-temp">
+            <ons-page id="two-page">
+                <ons-toolbar>
+                    <div class="left">                        
+                        <ons-toolbar-button onclick="splitterFunc.open()">                            
+                            <ons-icon icon="md-menu"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                    
+                    <div class="center">
+                        Page 2
+                    </div>
+
+                    <div class="right">
+                        <ons-toolbar-button id="home-button"> 
+                            <ons-icon icon="md-home"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                </ons-toolbar>
+
+                <ons-card>
+                    <div class="title">Page 2</div>
+                </ons-card>
+            </ons-page>
+        </template>
+
+        <template id="three-temp">
+            <ons-page id="three-page">
+                <ons-toolbar>
+                    <div class="left">                        
+                        <ons-toolbar-button onclick="splitterFunc.open()">                            
+                            <ons-icon icon="md-menu"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                    
+                    <div class="center">
+                        Page 3
+                    </div>
+
+                    <div class="right">
+                        <ons-toolbar-button id="home-button"> 
+                            <ons-icon icon="md-home"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                </ons-toolbar>
+
+                <ons-card>
+                    <div class="title">Page 3</div>
+                </ons-card>
+            </ons-page>
+        </template>
+
+        <script type="text/javascript" src="cordova.js"></script>     
+        
+        <script>            
+            document.addEventListener('init', function(event) {            
+                var page = event.target;           
+
+                // each has a home button, could also put in one block with an || operator
+                if(page.id === 'one-page'){
+                    page.querySelector('#home-button').onclick = function() {
+                        window.location = './index.html';
+                    };
+                }
+
+                if(page.id === 'twi-page'){
+                    page.querySelector('#home-button').onclick = function() {
+                        window.location = './index.html';
+                    };
+                }
+
+                if(page.id === 'three-page'){
+                    page.querySelector('#home-button').onclick = function() {
+                        window.location = './index.html';
+                    };
+                }
+                
+            });
+
+            // this will allow us to keep all the splitter methods under one object
+            // not required but keeps things contained
+            window.splitterFunc = {};
+
+            // the first method .open will open the splitter menu which we've grabbed by its id
+            window.splitterFunc.open = function() {
+                var menu = document.getElementById('menu');
+                menu.open();
+            };
+
+            // the second method .load(), loads the correct template and then closes the menu
+            window.splitterFunc.load = function(page) {
+                var content = document.getElementById('content');
+                var menu = document.getElementById('menu');
+                content.load(page)
+                    .then(menu.close.bind(menu));
+            }; 
+
+        </script>
+        
+    </body>
+</html>
