@@ -45,21 +45,3 @@ var app = {
 
 app.initialize();
 
-// Sign up function
-let signup = function() {  
-    var user = document.getElementById('username').value;  
-    var pw = document.getElementById('password').value;  
-    var pwConfirm = document.getElementById('passwordConfirm').value;
-
-    if (pw === pwConfirm) {  
-    	// Show successful pop up
-        ons.notification.alert('Congratulations! You have successfully signed up.');  
-        
-        // Redirect to home page
-	    document.getElementById('myNavigator').replacePage('home-temp');
-    } else {  
-    	// Show unsuccesfull pop up
-        ons.notification.alert('Please make sure both passwords match');  
-    }  
-};  
-
