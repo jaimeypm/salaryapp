@@ -156,11 +156,50 @@
                     <div class="center">Home</div>
                     <div class="right"><ons-button onclick="logOut()" style="padding-top: 10px;padding-right: 10px;">Log Out</ons-button></div>
                 </ons-toolbar>
-                <ons-list-header>Wine List</ons-list-header>
+                
+                
+                <!-- search boxes -->
+                <div style="padding:30px;">
+                    <!-- city dropdown -->
+                    <div class="form-group" width="80%" style="padding:10px;">
+                        <label for="city">Select the city</label>
+                        <div>
+                            <ons-select select-id="city" class="form-field-full" modifier="underbar">
+                                <option value="vancouver">Vancouver</option>
+                                <option value="toronto">Toronto</option>
+                            </ons-select>
+                        </div>
+                    </div>
+
+                    <!-- Experience dropdown -->
+                    <div class="form-group" style="padding:10px;"> 
+                        <label for="experience">Years of experience</label>
+                        <div>
+                            <ons-select select-id="experience" class="form-field-full" modifier="underbar">
+                                <option value="1">0 - 1 year</option>
+                                <option value="2">1 - 3 years</option>
+                                <option value="3">4 - 6 years</option>
+                                <option value="4">7 - 9 years</option>
+                                <option value="5">10 - 12 years</option>
+                                <option value="6">13 - 15 years</option>
+                                <option value="7">16+ years</option>
+                            </ons-select>
+                        </div>
+                    </div>
+
+                </div>
                 
                 <!-- Display wine list dynamically -->
+                <ons-list-header>Job List</ons-list-header>
                 <ons-list>
-                    <ons-lazy-repeat id="dynamic-list"></ons-lazy-repeat>
+                    <!-- <ons-lazy-repeat id="dynamic-list"></ons-lazy-repeat> -->
+                    <ons-list-item>
+                    <div class="center">
+                        <span id="salary" class="list-item__title">CAD$ 50,000</span>
+                        <span id="city" class="list-item__subtitle">Toronto 1-3years Junior</span>
+                    </div>
+                    <div class="right"><ons-button icon="md-caret-right"></ons-button></div>
+                    </ons-list-item>
                 </ons-list>                      
             </ons-page>
         </template>
