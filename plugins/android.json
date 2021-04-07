@@ -9,6 +9,9 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.assignment1.yap"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "com.assignment1.yap"
     }
   },
   "dependent_plugins": {}
