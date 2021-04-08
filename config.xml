@@ -17,7 +17,9 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <splash src="res/screen/android/splash-port-hdpi.png" density="hdpi" />
+        <!-- <resource-file src="res/colors.xml" target="/app/src/main/res/values/colors.xml"></resource-file> -->
+        <!-- <icon foreground="res/icon/android/xhdpi-fore.png" density="xhdpi" background="@color/background"> -->
+        <splash src="res/screen/android/splash-port-xhdpi.png" density="xhdpi" />
 
         <preference name="SplashScreenDelay" value="5000" />
         <preference name="AutoHideSplashScreen" value="true" />
