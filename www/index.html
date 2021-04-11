@@ -76,7 +76,7 @@
                         <ons-list-header>
                             <ons-row>
                                 <ons-col>
-                                    <ons-input placeholder="First"></ons-input>
+                                    <ons-input placeholder="First" input-id="first_name"></ons-input>
                                 </ons-col>
                                 <ons-col>
                                     <ons-input placeholder="Last"></ons-input>
@@ -236,6 +236,7 @@
                 
                 <!-- search boxes -->
                 <div style="padding:30px;">
+                    <h2>Welcome <span id="welcomeMessage"></span> !</h2>
                     <!-- city dropdown -->
                     <div class="form-group" style="padding:10px;">
                         <label for="city">Select the city</label>
@@ -367,7 +368,7 @@
 
                 <!-- Display Cost of Living data -->
                 <ons-card>
-                    <span class="list-item__title" style="margin-bottom:20px;">Cost of Living in Toronto</span>
+                    <span class="list-item__title" style="margin-bottom:20px;">Cost of Living in <span id="current_city"></span></span>
                     <ons-list-item>
                         <div class="left">
                             <ons-icon icon="fa-home" size="32px, material:24px"></ons-icon>
@@ -443,6 +444,8 @@
         };
 
         var createAccount_2 = function(){
+            var firstName = document.getElementById('first_name').value;
+            window.localStorage.setItem('first_name', firstName);
             myNavigator.pushPage('createAccount_2.html')
         };
 
@@ -483,7 +486,8 @@
 
                 //  load list of wines on home page
                  if(page.id === 'home-temp'){
-
+                    var welcomeMessageName = window.localStorage.getItem('first_name');
+                    page.querySelector('#welcomeMessage').innerHTML = welcomeMessageName;
                     // loadWineList(page);
                 } 
 
@@ -509,6 +513,7 @@
             page.querySelector('#singleFirmType').innerHTML = job.firmtype;
             page.querySelector('#singleExperience').innerHTML = job.experience;
 
+            page.querySelector('#current_city').innerHTML = currCity.city;
             page.querySelector('#meal').innerHTML = currCity.food;
             page.querySelector('#gas').innerHTML = currCity.gas + '/L';
             page.querySelector('#internet').innerHTML = currCity.internet + '/month';
