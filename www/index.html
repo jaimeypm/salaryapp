@@ -5,6 +5,7 @@
         <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
         
         <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
 
         <link rel="stylesheet" href="./lib/onsenui/css/onsenui.css">
         <link rel="stylesheet" href="./lib/onsenui/css/onsen-css-components.min.css">
@@ -13,7 +14,9 @@
         <script src="./lib/onsenui/js/onsenui.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 
-        <link rel="stylesheet" type="text/css" href="css/common.css">        
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap" rel="stylesheet">        
     </head>
     <body>
 
@@ -27,8 +30,8 @@
                 </ons-toolbar>   -->
                 <!-- Information fields -->
                 <div style="text-align: center; margin-top:5em">  
-                    <img src="img/wages-logo.png" alt="Wages Logo" style="width: 50%">
-                    <img src="img/revenue.png" alt="Wages Illustration" style="width: 100%">
+                    <img src="img/wages-logo-purple.png" alt="Wages Logo" style="width: 50%">
+                    <img src="img/revenue-purple.png" alt="Wages Illustration" style="width: 100%">
                     <p>  
                         <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>  
                     </p>  
@@ -227,7 +230,7 @@
             <ons-page id="home-temp">
                 <ons-toolbar>
                     <div class="center">Home</div>
-                    <div class="right"><ons-button onclick="logOut()" style="padding-top: 10px;padding-right: 10px;">Log Out</ons-button></div>
+                    <div class="right"><ons-button onclick="logOut()" style="margin:10px;">Log Out</ons-button></div>
                 </ons-toolbar>
                 
                 
@@ -329,18 +332,86 @@
 
                 <!-- Display job information -->
                 <ons-card>
-                    <div class="title" id="singleTitle"></div>
-                    <div class="title" id="singleSalary"></div>
-                    <div class="title" id="singleCity"></div>
-                    <div class="title" id="singleExperience"></div>
-                    <div class="title" id="singleSeniority"></div>
-                    <div class="title" id="singleFirmType"></div>
+                    <ons-list-item>
+                        <div class="left">
+                            <ons-icon icon="fa-briefcase" size="32px, material:24px"></ons-icon>
+                        </div>
+                        <div class="center">
+                            <span class="list-item__title" style="margin-bottom:15px;"><div id="singleSalary"></div></span>
+                            <span class="list-item__subtitle"><strong><div id="singleTitle"></div></strong></span>
+                            <span class="list-item__subtitle"><ons-icon icon="fa-map-marker-alt" size="32px, material:16px" style="margin-right:10px;"></ons-icon><span id="singleCity"></span></span>
+                        </div>
+                    </ons-list-item>
                 </ons-card>
+
                 <ons-card>
-                    <div class="title">2 person meal : <span id="meal"></span></div>
-                    <div class="title">Gas Price : <span id="gas"></span></div>
-                    <div class="title">Internet per month : <span id="internet"></span></div>
-                    <div class="title">1 bedroom apartment in city center : <span id="rent"></span></div>
+                    <ons-row class="small-header" style="margin: 20px 20px 0px 20px;">
+                        <ons-col>Seniority</ons-col>
+                        <ons-col>Experience</ons-col>
+                        <ons-col>Company</ons-col>
+                    </ons-row>
+
+                    <ons-row class="medium-header" style="margin: 0px 20px">
+                        <ons-col><div class="title" id="singleSeniority"></div></ons-col>
+                        <ons-col><div id="singleExperience"></div></ons-col>
+                        <ons-col><div class="title" id="singleFirmType"></div></ons-col>
+                    </ons-row>
+
+                        <div class="title" id="singleTitle"></div>
+                        <div class="title" id="singleSalary"></div>
+                        <div class="title" id="singleCity"></div>
+                        <div class="title" id="singleExperience"></div>
+                        <div class="title" id="singleSeniority"></div>
+                        <div class="title" id="singleFirmType"></div>
+                </ons-card>
+
+                <!-- Display Cost of Living data -->
+                <ons-card>
+                    <span class="list-item__title" style="margin-bottom:20px;">Cost of Living in Toronto</span>
+                    <ons-list-item>
+                        <div class="left">
+                            <ons-icon icon="fa-home" size="32px, material:24px"></ons-icon>
+                        </div>
+                        <div class="center">
+                            <span class="list-item__title" style="margin-bottom:5px; font-size:18px"><span id="rent"></span></span>
+                            <span class="list-item__subtitle">1 bedroom apartment</div></span>
+                        </div>
+                    </ons-list-item>
+
+                    <ons-list-item>
+                        <div class="left">
+                            <ons-icon icon="fa-gas-pump" size="32px, material:24px"></ons-icon>
+                        </div>
+                        <div class="center">
+                            <span class="list-item__title" style="margin-bottom:5px; font-size:18px"><span id="gas"></span></span>
+                            <span class="list-item__subtitle">Gas Price</div></span>
+                        </div>
+                    </ons-list-item>
+
+                    <ons-list-item>
+                        <div class="left">
+                            <ons-icon icon="fa-wifi" size="32px, material:24px"></ons-icon>
+                        </div>
+                        <div class="center">
+                            <span class="list-item__title" style="margin-bottom:5px; font-size:18px"><span id="internet"></span></span>
+                            <span class="list-item__subtitle">Internet</div></span>
+                        </div>
+                    </ons-list-item>
+
+                    <ons-list-item>
+                        <div class="left">
+                            <ons-icon icon="fa-utensils" size="32px, material:24px"></ons-icon>
+                        </div>
+                        <div class="center">
+                            <span class="list-item__title" style="margin-bottom:5px; font-size:18px"><span id="meal"></span></span>
+                            <span class="list-item__subtitle">Restaurant meal for two</div></span>
+                        </div>
+                    </ons-list-item>
+
+                    <span id="meal"></span>
+                    <span id="gas"></span>
+                    <span id="internet"></span>
+                    <span id="rent"></span>
                 </ons-card>
             </ons-page>
         </template>
@@ -423,23 +494,25 @@
                 }             
             }); 
 
+        // Display single job salary details
         function populateSingle(page, job){
             console.log(job);
             var currJobCity = job.city;
             var currCity = cityCosts.find(({city})=> city === currJobCity);
             console.log(currCity);
             page.querySelector('ons-toolbar .center').innerHTML = job.jobtitle;
-
+            
             page.querySelector('#singleTitle').innerHTML = job.jobtitle;
-            page.querySelector('#singleSalary').innerHTML = job.salary;
+            page.querySelector('#singleSalary').innerHTML = 'CAD$' + job.salary;
             page.querySelector('#singleCity').innerHTML = job.city;
             page.querySelector('#singleSeniority').innerHTML = job.seniority;
             page.querySelector('#singleFirmType').innerHTML = job.firmtype;
+            page.querySelector('#singleExperience').innerHTML = job.experience;
 
             page.querySelector('#meal').innerHTML = currCity.food;
-            page.querySelector('#gas').innerHTML = currCity.gas;
-            page.querySelector('#internet').innerHTML = currCity.internet;
-            page.querySelector('#rent').innerHTML = currCity.rent;
+            page.querySelector('#gas').innerHTML = currCity.gas + '/L';
+            page.querySelector('#internet').innerHTML = currCity.internet + '/month';
+            page.querySelector('#rent').innerHTML = currCity.rent + '/month';
         }
     
 
@@ -523,10 +596,10 @@
                         
                         '<ons-list-item>' +
                             '<div class="center">' +
-                                '<span id="salary" class="list-item__title">CAD $ ' + result.jobs[i].salary + '</span>' +
-                                '<span id="city" class="list-item__subtitle">'+ result.jobs[i].city +' | ' + result.jobs[i].experience + ' | ' + result.jobs[i].seniority + '</span>' +
+                                '<span id="salary" class="list-item__title" style="margin-bottom:20px;">CAD $ ' + result.jobs[i].salary + '</span>' +
+                                '<ons-col> <span id="city" class="list-item__subtitle">' + result.jobs[i].city + '</ons-col>' + '<ons-col>' + result.jobs[i].experience + '</ons-col>' + result.jobs[i].seniority + '</span>' +
                             '</div>' +
-                            '<div class="right"><ons-button onclick="pushSingleView(\'' + result.jobs[i].id + '\')" icon="md-caret-right"></ons-button></div>' + 
+                            '<div class="right"><ons-button onclick="pushSingleView(\'' + result.jobs[i].id + '\')" icon="md-caret-right" style="margin-left:20px;"></ons-button></div>' + 
                         '</ons-list-item>'
                         
                     )

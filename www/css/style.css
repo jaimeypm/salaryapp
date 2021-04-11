@@ -1,1 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap');
 
+.single-title {
+    font-size: 2em;
+    color: #6353A3;
+}
+
+.small-header {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6353A3;
+}
+
+.medium-header {
+    color: #333;
+    font-size: 18px;
+}
+
+.large-header {
+    font-size: 18px;
+    color: #6353A3;
+}
