@@ -25,22 +25,19 @@
         <!-- Sign Up Process -->
         <template id="signup.html">
             <ons-page id="signup-temp">
-                <!-- <ons-toolbar>  
-                    <div class="center">Log In</div>  
-                </ons-toolbar>   -->
+
                 <!-- Information fields -->
                 <div style="text-align: center; margin-top:5em">  
                     <img src="img/wages-logo-purple.png" alt="Wages Logo" style="width: 50%">
                     <img src="img/revenue-purple.png" alt="Wages Illustration" style="width: 100%">
+
                     <p>  
                         <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>  
-                    </p>  
+                    </p> 
+
                     <p>  
                         <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>  
                     </p>
-                    <!-- <p>  
-                        <ons-input id="passwordConfirm" modifier="underbar" type="password" placeholder="Confirm Password" float></ons-input>  
-                    </p>   -->
 
                     <div style="margin-top: 30px;"><ons-icon icon="ion-logo-google" size="32px, material:24px"></ons-icon> &nbsp;
                     <ons-icon icon="ion-logo-facebook" size="32px, material:24px"></ons-icon> &nbsp;
@@ -58,8 +55,7 @@
                 </div>  
           </ons-page>
         </template>
-
-        
+        <!-- End of Sign Up Process -->
 
         <!-- create account page 1 -->
         <template id="createAccount_1.html">
@@ -233,7 +229,6 @@
                     <div class="right"><ons-button onclick="logOut()" style="margin:10px;">Log Out</ons-button></div>
                 </ons-toolbar>
                 
-                
                 <!-- search boxes -->
                 <div style="padding:30px;">
                     <h2>Welcome <span id="welcomeMessage"></span> !</h2>
@@ -319,10 +314,10 @@
                 </ons-list>                      
             </ons-page>
         </template>
-
+        <!-- End of Home Page -->
         
 
-        <!-- Single Product Page -->
+        <!-- Single Result Page -->
         <template id="single.html">
             <ons-page id="single-temp">
                 <ons-toolbar>
@@ -416,6 +411,7 @@
                 </ons-card>
             </ons-page>
         </template>
+        <!-- Single Result Page -->
 
         
         <ons-modal id="spinner-modal">
@@ -500,7 +496,6 @@
 
         // Display single job salary details
         function populateSingle(page, job){
-            console.log(job);
             var currJobCity = job.city;
             var currCity = cityCosts.find(({city})=> city === currJobCity);
             console.log(currCity);
@@ -522,12 +517,15 @@
     
 
         function submitSearch(){
-            var page = document.getElementById('home-temp');
+            // variables to hold the min and max ranges
             var min_salary_input;
             var max_salary_input;
+
+            // grabbing the page salary range selected
+            var page = document.getElementById('home-temp');
             var salaryCase = page.querySelector('#salary').value;
 
-            
+            // defining bounding salary range according to the range selected in DOM
             switch(salaryCase){
                 case '0':
                     break;
@@ -555,10 +553,8 @@
                     min_salary = 180000;
                     break;
             }
-            console.log('T1:'+ salaryCase);
-            console.log('T2:'+ min_salary_input);
-            console.log('T3:'+ max_salary_input);
 
+            // create search params
             var searchParam = {
                 city: page.querySelector('#city').value,
                 experience: page.querySelector('#experience').value,
@@ -567,7 +563,7 @@
                 max_salary: max_salary_input
             }
 
-
+            // passing params into the API call
             loadJobsList(searchParam);
         }
 
@@ -576,7 +572,7 @@
             spinnerModal.show();
             $.ajax('https://MDIA4295.verdipang.ca/dataset/read.php?city=' + result.city +'&experience='+ result.experience + '&seniority=' + result.seniority + '&min_salary=' + result.min_salary + '&max_salary=' + result.max_salary)
                 .done(function(result){
-                    // console.log(result);
+                    // using the result to dynamically generate the list
                     populateJobsList(result);
                 })
                 .fail(function(xhr,status,error){
@@ -592,8 +588,10 @@
             var page = document.getElementById('home-temp');
             var dynList = page.querySelector('#dynamic-list');
 
+            // removing exisiting elements
             dynList.querySelectorAll('ons-list-item').forEach(n => n.remove());
 
+            // creating results and appending to the list 
             for(let i = 0; i < result.count; i++) {
 
                 dynList.appendChild(
@@ -622,23 +620,11 @@
                 .fail(function(xhr,status,error){
                     console.log('error:' + xhr.status);
                 })
-            // get the current wine from the wineList data 
-            // var currWine = wineList[Number.parseInt(fIndex)];
-
-            // push the single page view on the stack 
-            // document.querySelector('#myNavigator').pushPage('single.html', {data: {cWine: currWine}});
         }
 
         function createSignleView(result){
             var currJob = result.jobs[0];
-            
-            // console.log(currCity);
 
-            // var selectedCity = cityCosts[city[currCity]]
-            // console.log(currCity);
-            
-            // var page = document.getElementById('single-temp');
-            // page.querySelector('#singleTitle').innerHTML = result.jobs[0].jobtitle;
             document.querySelector('#myNavigator').pushPage('single.html', {data: {job: currJob}})
         }
     </script>
