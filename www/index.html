@@ -305,7 +305,7 @@
                 </div>
                 
                 <!-- Display wine list dynamically -->
-                <ons-list-header>Job List</ons-list-header>
+                <ons-list-header><span style="margin: 0px 20px;">Job List</span></ons-list-header>
                 <ons-list>
                     <ons-lazy-repeat id="dynamic-list"></ons-lazy-repeat>
                     <!-- <ons-list-item>
@@ -594,9 +594,9 @@
                 dynList.appendChild(
                     ons.createElement(
                         
-                        '<ons-list-item>' +
+                        '<ons-list-item style="padding: 0px 20px 0px 35px;">' +
                             '<div class="center">' +
-                                '<span id="salary" class="list-item__title" style="margin-bottom:20px;">CAD $ ' + result.jobs[i].salary + '</span>' +
+                                '<span id="salary" class="list-item__title" style="margin-bottom:20px;">CAD$ ' + result.jobs[i].salary + '</span>' +
                                 '<ons-col> <span id="city" class="list-item__subtitle">' + result.jobs[i].city + '</ons-col>' + '<ons-col>' + result.jobs[i].experience + '</ons-col>' + result.jobs[i].seniority + '</span>' +
                             '</div>' +
                             '<div class="right"><ons-button onclick="pushSingleView(\'' + result.jobs[i].id + '\')" icon="md-caret-right" style="margin-left:20px;"></ons-button></div>' + 
